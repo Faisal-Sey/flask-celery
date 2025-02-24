@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+</head>
+<body>
+    <h1>Task Manager</h1>
+    <form action="/create_task" method="POST">
+        <label for="name">Task Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <label for="task_type">Task Type:</label>
+        <select id="task_type" name="task_type">
+            <option value="periodic">Periodic</option>
+            <option value="daily">Daily</option>
+            <option value="one-off">One-Off</option>
+        </select>
+        <br>
+        <label for="scheduled_time">Scheduled Time (for daily tasks):</label>
+        <input type="time" id="scheduled_time" name="scheduled_time">
+        <br>
+        <button type="submit">Create Task</button>
+    </form>
+
+    <h2>Tasks</h2>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                {{ task.name }} - {{ task.task_type }} - {{ task.status }}
+                <form action="/delete_task/{{ task.id }}" method="POST" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
