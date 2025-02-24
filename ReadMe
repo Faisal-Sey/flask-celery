@@ -1,6 +1,6 @@
 # Flask-Celery Task Manager for Windows
 
-A Flask-based web application integrated with Celery for asynchronous task management, specifically configured for Windows environments. This application allows users to create, schedule, monitor, and delete tasks using SQLite3 for storage and RabbitMQ for task queue management.
+A Flask-based web application integrated with Celery for asynchronous task management. This application allows users to create, schedule, monitor, and delete tasks using SQLite3 for storage and RabbitMQ for task queue management.
 
 ## Features
 
@@ -50,17 +50,7 @@ A Flask-based web application integrated with Celery for asynchronous task manag
    python run.py
    ```
 
-3. **Start the Celery worker:**
-   ```bash
-   start_worker.bat
-   ```
-   Note: The `start_worker.bat` file contains:
-   ```batch
-   set FORKED_BY_MULTIPROCESSING=1
-   celery -A celery_worker.celery worker --pool=solo -l info
-   ```
-
-4. **Access the application:**
+5. **Access the application:**
    - Open your browser and go to `http://127.0.0.1:5000`
 
 ## Directory Structure
@@ -80,7 +70,6 @@ flask-celery-app/
 ├── requirements.txt
 ├── run.py
 ├── celery_worker.py
-└── start_worker.bat
 ```
 
 ## Usage
@@ -103,11 +92,6 @@ flask-celery-app/
 ### Common Issues
 - **Celery Worker Error 3**: Ensure `FORKED_BY_MULTIPROCESSING=1` is set
 - **Connection Issues**: Verify RabbitMQ service is running
-- **Worker Won't Start**: Make sure to use `--pool=solo` flag on Windows
-
-### RabbitMQ Connection
-- Check RabbitMQ Management Console at `http://localhost:15672`
-- Default credentials: guest/guest
 
 ## Future Enhancements
 
