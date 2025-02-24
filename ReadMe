@@ -1,0 +1,136 @@
+# Flask-Celery Task Manager for Windows
+
+A Flask-based web application integrated with Celery for asynchronous task management, specifically configured for Windows environments. This application allows users to create, schedule, monitor, and delete tasks using SQLite3 for storage and RabbitMQ for task queue management.
+
+## Features
+
+- Task Creation: Create tasks with name, type (periodic, daily, one-off), and scheduled time
+- Task Monitoring: View task status (pending, running, completed, failed)
+- Task Deletion: Remove tasks from the system
+- Asynchronous Execution: Tasks run asynchronously using Celery
+- Simple UI: Basic HTML interface for task management
+
+## Prerequisites
+
+- Python 3.7+
+- Erlang
+- RabbitMQ
+- Pip (Python package manager)
+
+## Installation
+
+1. **Install Erlang and RabbitMQ:**
+   - Download and install Erlang from: https://erlang.org/download/
+   - Download and install RabbitMQ from: https://www.rabbitmq.com/download.html
+
+2. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/flask-celery-app.git
+   cd flask-celery-app
+   ```
+
+3. **Install Python dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Create the database:**
+   ```bash
+   python run.py
+   ```
+
+## Running the Application
+
+1. **Ensure RabbitMQ is running**
+   - RabbitMQ service should start automatically after installation
+   - Check Windows Services if needed
+
+2. **Start the Flask application:**
+   ```bash
+   python run.py
+   ```
+
+3. **Start the Celery worker:**
+   ```bash
+   start_worker.bat
+   ```
+   Note: The `start_worker.bat` file contains:
+   ```batch
+   set FORKED_BY_MULTIPROCESSING=1
+   celery -A celery_worker.celery worker --pool=solo -l info
+   ```
+
+4. **Access the application:**
+   - Open your browser and go to `http://127.0.0.1:5000`
+
+## Directory Structure
+
+```
+flask-celery-app/
+│
+├── app/
+│   ├── __init__.py
+│   ├── models.py
+│   ├── routes.py
+│   ├── tasks.py
+│   ├── config.py
+│   └── templates/
+│       └── index.html
+│
+├── requirements.txt
+├── run.py
+├── celery_worker.py
+└── start_worker.bat
+```
+
+## Usage
+
+### Creating Tasks
+1. Fill out the task creation form:
+   - Task Name
+   - Task Type (periodic, daily, or one-off)
+   - Scheduled Time (for daily tasks)
+2. Submit the form to create the task
+
+### Monitoring Tasks
+- View all tasks and their status on the homepage
+
+### Deleting Tasks
+- Use the Delete button next to each task
+
+## Troubleshooting
+
+### Common Issues
+- **Celery Worker Error 3**: Ensure `FORKED_BY_MULTIPROCESSING=1` is set
+- **Connection Issues**: Verify RabbitMQ service is running
+- **Worker Won't Start**: Make sure to use `--pool=solo` flag on Windows
+
+### RabbitMQ Connection
+- Check RabbitMQ Management Console at `http://localhost:15672`
+- Default credentials: guest/guest
+
+## Future Enhancements
+
+- Periodic task scheduling with Celery Beat
+- Real-time monitoring via WebSocket
+- User authentication system
+- Enhanced UI with task logs and analytics
+- Task priority management
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- [Flask](https://flask.palletsprojects.com/)
+- [Celery](https://docs.celeryproject.org/)
+- [RabbitMQ](https://www.rabbitmq.com/)
+
+## Contact
+
+For questions or feedback, please open an issue in the repository.
