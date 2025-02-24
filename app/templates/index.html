@@ -4,36 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Manager</title>
+    <script>
+        // Function to show/hide fields based on selected task type
+        function toggleFields() {
+            const taskType = document.getElementById("task_type").value;
+            const intervalField = document.getElementById("interval_field");
+            const scheduledTimeField = document.getElementById("scheduled_time_field");
+            const delayField = document.getElementById("delay_field");
+            const cronExpressionField = document.getElementById("cron_expression_field");
+
+            // Hide all fields initially
+            intervalField.style.display = "none";
+            scheduledTimeField.style.display = "none";
+            delayField.style.display = "none";
+            cronExpressionField.style.display = "none";
+
+            // Show fields based on selected task type
+            if (taskType === "periodic") {
+                intervalField.style.display = "block";
+            } else if (taskType === "daily") {
+                scheduledTimeField.style.display = "block";
+            } else if (taskType === "delayed") {
+                delayField.style.display = "block";
+            } else if (taskType === "cron") {
+                cronExpressionField.style.display = "block";
+            }
+        }
+
+        // Attach the function to the task_type dropdown's change event
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("task_type").addEventListener("change", toggleFields);
+            toggleFields(); // Call the function initially to set the correct visibility
+        });
+    </script>
 </head>
 <body>
-    <h1>Task Manager</h1>
-    <form action="/create_task" method="POST">
-        <label for="name">Task Name:</label>
-        <input type="text" id="name" name="name" required>
+<h1>Task Manager</h1>
+<form action="/create_task" method="POST">
+    <label for="name">Task Name:</label>
+    <input type="text" id="name" name="name" required>
+    <br>
+    <label for="task_type">Task Type:</label>
+    <select id="task_type" name="task_type">
+        <option value="periodic">Periodic</option>
+        <option value="daily">Daily</option>
+        <option value="one-off">One-Off</option>
+        <option value="delayed">Delayed Start</option>
+        <option value="cron">Cron-like</option>
+    </select>
+    <br>
+    <!-- Interval field for periodic tasks -->
+    <div id="interval_field">
+        <label for="interval">Interval (in seconds, for periodic tasks):</label>
+        <input type="number" id="interval" name="interval">
         <br>
-        <label for="task_type">Task Type:</label>
-        <select id="task_type" name="task_type">
-            <option value="periodic">Periodic</option>
-            <option value="daily">Daily</option>
-            <option value="one-off">One-Off</option>
-        </select>
-        <br>
+    </div>
+    <!-- Scheduled time field for daily tasks -->
+    <div id="scheduled_time_field">
         <label for="scheduled_time">Scheduled Time (for daily tasks):</label>
         <input type="time" id="scheduled_time" name="scheduled_time">
         <br>
-        <button type="submit">Create Task</button>
-    </form>
+    </div>
+    <!-- Delay field for delayed tasks -->
+    <div id="delay_field">
+        <label for="delay">Delay (in seconds, for delayed tasks):</label>
+        <input type="number" id="delay" name="delay">
+        <br>
+    </div>
+    <!-- Cron expression field for cron-like tasks -->
+    <div id="cron_expression_field">
+        <label for="cron_expression">Cron Expression (for cron-like tasks):</label>
+        <input type="text" id="cron_expression" name="cron_expression" placeholder="e.g., 0 0 * * *">
+        <br>
+    </div>
+    <button type="submit">Create Task</button>
+</form>
 
-    <h2>Tasks</h2>
-    <ul>
-        {% for task in tasks %}
-            <li>
-                {{ task.name }} - {{ task.task_type }} - {{ task.status }}
-                <form action="/delete_task/{{ task.id }}" method="POST" style="display:inline;">
-                    <button type="submit">Delete</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
+<h2>Tasks</h2>
+<ul>
+    {% for task in tasks %}
+    <li>
+        {{ task.name }} - {{ task.task_type }} - {{ task.status }}
+        <form action="/delete_task/{{ task.id }}" method="POST" style="display:inline;">
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
 </body>
 </html>

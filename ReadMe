@@ -1,4 +1,4 @@
-# Flask-Celery Task Manager for Windows
+Flask-Celery Task Manager for Windows
 
 A Flask-based web application integrated with Celery for asynchronous task management. This application allows users to create, schedule, monitor, and delete tasks using SQLite3 for storage and RabbitMQ for task queue management.
 
